@@ -6,13 +6,47 @@ services:
   # mongo database used to store metadata/data
   mongo:
     image: mongo:latest
+    restart: always
     ports:
       - "27017:27017"
     volumes:
       - /mnt/clowder/mongo:/data/db
   
+  # rabbitmq to connect to extractors
+  rabbitmq:
+    image: rabbitmq:management
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - /mnt/clowder/rabbitmq:/var/lib/rabbitmq
+  
+  # elasticsearch to allow indexing
+  elasticsearch:
+    image: elasticsearch:2
+    restart: always
+    command: elasticsearch -Des.cluster.name="clowder"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /mnt/clowder/esdata:/usr/share/elasticsearch/data
+  
+  # geoserver to render tiles
+  geoserver:
+    build: geoserver
+    restart: always
+    user: "0:1258"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /mnt/clowder/geoserver_data:/opt/geoserver/data_dir
+      - /gpfs/largeblockFS/projects/skope:/gpfs/largeblockFS/projects/skope
+  
   clowder:
     image: clowder/clowder:develop
+    restart: always
     environment:
       CLOWDER_ADMIN: "jefft@illinois.edu"
       TOOLMANAGER_URI: "http://192.168.99.100:8080"
@@ -21,17 +55,20 @@ services:
       SMTP_HOST: smtp.ncsa.illinois.edu
     depends_on:
       - mongo
+      - rabbitmq
     ports:
       - "9000:9000"
-  
+
   # extractors
   filedigest:
     image: clowder/extractors-digest
+    restart: always
     environment:
       RABBITMQ_URI: "amqp://rabbitmq:5672"
       REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors?key=r1ek3rs"
     depends_on:
       - clowder
+      - rabbitmq
   
   #audiopreview:
   #  image: clowder/extractors-audio-preview
@@ -45,6 +82,7 @@ services:
       REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors"
     depends_on:
       - clowder
+      - rabbitmq
   
   imagemetadata:
     image: clowder/extractors-image-metadata
@@ -53,6 +91,7 @@ services:
       REGISTRATION_ENDPOINTS: "http://clowder/extractors"
     depends_on:
       - clowder
+      - rabbitmq
   
   imagegeotiff:
     image: clowder/extractors-image-geotiff
@@ -61,6 +100,7 @@ services:
       REGISTRATION_ENDPOINTS: "http://clowder/extractors"
     depends_on:
       - clowder
+      - rabbitmq
   
   geoshp:
     image: clowder/extractors-geo-shp
@@ -73,6 +113,7 @@ services:
       GEOSERVER_WORKSPACE: "clowder"
     depends_on:
       - clowder
+      - rabbitmq
       - geoserver
 
   geotiff:
@@ -86,26 +127,8 @@ services:
       GEOSERVER_WORKSPACE: "clowder"
     depends_on:
       - clowder
+      - rabbitmq
       - geoserver
-  
-  # rabbitmq to connect to extractors
-  rabbitmq:
-    image: rabbitmq:management
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - /mnt/clowder/rabbitmq:/var/lib/rabbitmq
-  
-  # elasticsearch to allow indexing
-  elasticsearch:
-    image: elasticsearch:2
-    command: elasticsearch -Des.cluster.name="clowder"
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - /mnt/clowder/esdata:/usr/share/elasticsearch/data
   
   web:
     build: nginx
@@ -114,18 +137,9 @@ services:
       - "80:80"
     depends_on:
       - rabbitmq
+      - elasticsearch
       - geoserver
       - clowder
-  
-  geoserver:
-    build: geoserver
-    restart: always
-    user: "0:1258"
-    ports:
-      - "8080:8080"
-    volumes:
-      - /mnt/clowder/geoserver_data:/opt/geoserver/data_dir
-      - /mnt/skope:/projects/skope
   
 networks:
   default:
