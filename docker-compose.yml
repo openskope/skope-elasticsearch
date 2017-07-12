@@ -1,0 +1,135 @@
+# clowder server
+version: '2'
+
+services:
+
+  # mongo database used to store metadata/data
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - /mnt/clowder/mongo:/data/db
+  
+  clowder:
+    image: clowder/clowder:develop
+    environment:
+      CLOWDER_ADMIN: "jefft@illinois.edu"
+      TOOLMANAGER_URI: "http://192.168.99.100:8080"
+      MONGO_URI: "mongodb://mongo:27017/clowder"
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      SMTP_HOST: smtp.ncsa.illinois.edu
+    depends_on:
+      - mongo
+    ports:
+      - "9000:9000"
+  
+  # extractors
+  filedigest:
+    image: clowder/extractors-digest
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors?key=r1ek3rs"
+    depends_on:
+      - clowder
+  
+  #audiopreview:
+  #  image: clowder/extractors-audio-preview
+  #  links:
+  #    - rabbitmq
+  
+  imagepreview:
+    image: clowder/extractors-image-preview
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors"
+    depends_on:
+      - clowder
+  
+  imagemetadata:
+    image: clowder/extractors-image-metadata
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
+    depends_on:
+      - clowder
+  
+  imagegeotiff:
+    image: clowder/extractors-image-geotiff
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
+    depends_on:
+      - clowder
+  
+  geoshp:
+    image: clowder/extractors-geo-shp
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
+      GEOSERVER_URL: "http://geoserver:8080/web"
+      GEOSERVER_USERNAME: "admin"
+      GEOSERVER_PASSWORD: "geoserver"
+      GEOSERVER_WORKSPACE: "clowder"
+    depends_on:
+      - clowder
+      - geoserver
+
+  geotiff:
+    image: clowder/extractors-geo-tiff
+    environment:
+      RABBITMQ_URI: "amqp://rabbitmq:5672"
+      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
+      GEOSERVER_URL: "http://geoserver:8080/web"
+      GEOSERVER_USERNAME: "admin"
+      GEOSERVER_PASSWORD: "geoserver"
+      GEOSERVER_WORKSPACE: "clowder"
+    depends_on:
+      - clowder
+      - geoserver
+  
+  # rabbitmq to connect to extractors
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - /mnt/clowder/rabbitmq:/var/lib/rabbitmq
+  
+  # elasticsearch to allow indexing
+  elasticsearch:
+    image: elasticsearch:2
+    command: elasticsearch -Des.cluster.name="clowder"
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - /mnt/clowder/esdata:/usr/share/elasticsearch/data
+  
+  web:
+    build: nginx
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - rabbitmq
+      - geoserver
+      - clowder
+  
+  geoserver:
+    build: geoserver
+    restart: always
+    user: "0:1258"
+    ports:
+      - "8080:8080"
+    volumes:
+      - /mnt/clowder/geoserver_data:/opt/geoserver/data_dir
+      - /mnt/skope:/projects/skope
+  
+networks:
+  default:
+    driver: bridge
+    driver_opts:
+      com.docker.network.driver.mtu: 1424
+
