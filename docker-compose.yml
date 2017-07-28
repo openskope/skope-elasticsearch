@@ -47,6 +47,7 @@ services:
   clowder:
     image: clowder/clowder:develop
     restart: always
+    user: "0:1258"
     environment:
       CLOWDER_ADMIN: "jefft@illinois.edu"
       TOOLMANAGER_URI: "http://192.168.99.100:8080"
@@ -56,6 +57,9 @@ services:
     depends_on:
       - mongo
       - rabbitmq
+    volumes:
+      - ./clowder/custom:/home/clowder/clowder/custom
+      - /projects/skope:/projects/skope
     ports:
       - "9000:9000"
 
