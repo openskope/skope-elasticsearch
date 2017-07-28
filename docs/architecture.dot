@@ -1,0 +1,34 @@
+digraph hierarchy {
+
+                label="SKOPE Architecture"
+                nodesep=0.3 // increases the separation between nodes
+                rankdir=LR; // draw left to right
+                
+                node [color=Red,fontname=Courier,shape=oval] //All nodes will this shape and colour
+                edge [color=Blue, style=dashed] //All the lines look like this
+
+                
+                subgraph services {
+                    UI -> {Clowder ES Geoserver Graphgen}
+                    Clowder->{RabbitMQ ES}
+                    {rank=same; Clowder ES Geoserver Graphgen}
+                    ES[label="ElasticSearch"]
+                }
+                
+                subgraph extractors {
+                    label="Extractors"
+                    RabbitMQ -> {PaleoCAR Metadata GeoTiff}
+                    PaleoCAR->Clowder
+                    Metadata->ES
+                    GeoTiff->Geoserver
+                    {rank=same; PaleoCAR Metadata GeoTiff}
+                }
+                }
+                {rank=same; Clowder ES Geoserver Graphgen}
+                
+                PaleoCAR->Clowder
+                GeoTiff->Geoserver
+                Metadata->ES
+                
+                
+}
