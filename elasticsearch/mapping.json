@@ -38,7 +38,7 @@
             "id": { "type": "keyword" },
             "title": { "type": "text" },
             "wms": { "type": "keyword" },
-            "download", { "type": "keyword" },
+            "download": { "type": "keyword" },
             "datatype": { "type": "keyword" },
             "min": { "type": "float" },
             "max": { "type": "float" }
