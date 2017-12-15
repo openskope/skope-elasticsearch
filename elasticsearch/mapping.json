@@ -2,17 +2,21 @@
   "mappings": {
     "dataset": {
       "properties": {
+        "id": { "type": "keyword" },
         "title": { "type": "text" },
         "description": { "type": "text" },
         "creator": { "type": "keyword" },
-        "updated": { 
+        "revised": { 
           "type": "date",
           "format": "yyyy-MM-dd hh:mm"
           },
         "status": { "type": "keyword" },
         "datatypes": { "type": "keyword" },
+
+        "dataset": { "type": "keyword" },
         "docs": { "type": "keyword" },
         "logo": { "type": "keyword" },
+
         "extent": { "type": "geo_shape" },
         "period": {
           "type": "date_range",
@@ -22,15 +26,19 @@
         "model": { 
           "properties": {
             "nickname": { "type": "keyword" },
-            "title": { "type": "text" }
+            "title": { "type": "text" },
+            "version": { "type": "keyword" },
+            "new": { "type": "keyword" }
           }
         },
 
         "layers": {
           "type": "nested",
           "properties": {
+            "id": { "type": "keyword" },
             "title": { "type": "text" },
             "wms": { "type": "keyword" },
+            "download", { "type": "keyword" },
             "datatype": { "type": "keyword" },
             "min": { "type": "float" },
             "max": { "type": "float" }
