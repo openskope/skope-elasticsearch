@@ -1,0 +1,43 @@
+{
+  "mappings": {
+    "dataset": {
+      "properties": {
+        "title": { "type": "text" },
+        "description": { "type": "text" },
+        "creator": { "type": "keyword" },
+        "updated": { 
+          "type": "date",
+          "format": "yyyy-MM-dd hh:mm"
+          },
+        "status": { "type": "keyword" },
+        "datatypes": { "type": "keyword" },
+        "docs": { "type": "keyword" },
+        "logo": { "type": "keyword" },
+        "extent": { "type": "geo_shape" },
+        "period": {
+          "type": "date_range",
+          "format": "yyyy-MM-dd"
+        },
+
+        "model": { 
+          "properties": {
+            "nickname": { "type": "keyword" },
+            "title": { "type": "text" }
+          }
+        },
+
+        "layers": {
+          "type": "nested",
+          "properties": {
+            "title": { "type": "text" },
+            "wms": { "type": "keyword" },
+            "datatype": { "type": "keyword" },
+            "min": { "type": "float" },
+            "max": { "type": "float" }
+          }
+        }
+      }
+    }
+  }
+}
+        
