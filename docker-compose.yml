@@ -1,5 +1,5 @@
 # clowder server
-version: '2'
+version: '3'
 
 services:
 
@@ -7,31 +7,34 @@ services:
   mongo:
     image: mongo:latest
     restart: always
+    user: "0:1258"
     ports:
       - "27017:27017"
     volumes:
-      - /mnt/clowder/mongo:/data/db
+      - /mnt/skope/staging/mongo:/data/db
   
   # rabbitmq to connect to extractors
   rabbitmq:
     image: rabbitmq:management
     restart: always
+    user: "0:1258"
     ports:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - /mnt/clowder/rabbitmq:/var/lib/rabbitmq
+      - /mnt/skope/staging/rabbitmq:/var/lib/rabbitmq
   
   # elasticsearch to allow indexing
   elasticsearch:
     image: elasticsearch:2
     restart: always
+    user: "0:1258"
     command: elasticsearch -Des.cluster.name="clowder"
     ports:
       - "9200:9200"
       - "9300:9300"
     volumes:
-      - /mnt/clowder/esdata:/usr/share/elasticsearch/data
+      - /mnt/skope:/projects/skope
   
   # geoserver to render tiles
   geoserver:
@@ -40,9 +43,11 @@ services:
     user: "0:1258"
     ports:
       - "8080:8080"
+    environment:
+      JAVA_OPTS: "-Xmx1536M -XX:MaxPermSize=756M -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
+      GEOSERVER_DATA_DIR: "/projects/skope/staging/geoserver"
     volumes:
-      - /mnt/clowder/geoserver_data:/opt/geoserver/data_dir
-      - /gpfs/largeblockFS/projects/skope:/gpfs/largeblockFS/projects/skope
+      - /mnt/skope:/projects/skope
   
   clowder:
     image: clowder/clowder:develop
@@ -59,81 +64,10 @@ services:
       - rabbitmq
     volumes:
       - ./clowder/custom:/home/clowder/clowder/custom
-      - /projects/skope:/projects/skope
+      - /mnt/skope:/projects/skope
     ports:
       - "9000:9000"
 
-  # extractors
-  filedigest:
-    image: clowder/extractors-digest
-    restart: always
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors?key=r1ek3rs"
-    depends_on:
-      - clowder
-      - rabbitmq
-  
-  #audiopreview:
-  #  image: clowder/extractors-audio-preview
-  #  links:
-  #    - rabbitmq
-  
-  imagepreview:
-    image: clowder/extractors-image-preview
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder:9000/api/extractors"
-    depends_on:
-      - clowder
-      - rabbitmq
-  
-  imagemetadata:
-    image: clowder/extractors-image-metadata
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
-    depends_on:
-      - clowder
-      - rabbitmq
-  
-  imagegeotiff:
-    image: clowder/extractors-image-geotiff
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
-    depends_on:
-      - clowder
-      - rabbitmq
-  
-  geoshp:
-    image: clowder/extractors-geo-shp
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
-      GEOSERVER_URL: "http://geoserver:8080/web"
-      GEOSERVER_USERNAME: "admin"
-      GEOSERVER_PASSWORD: "geoserver"
-      GEOSERVER_WORKSPACE: "clowder"
-    depends_on:
-      - clowder
-      - rabbitmq
-      - geoserver
-
-  geotiff:
-    image: clowder/extractors-geo-tiff
-    environment:
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      REGISTRATION_ENDPOINTS: "http://clowder/extractors"
-      GEOSERVER_URL: "http://geoserver:8080/web"
-      GEOSERVER_USERNAME: "admin"
-      GEOSERVER_PASSWORD: "geoserver"
-      GEOSERVER_WORKSPACE: "clowder"
-    depends_on:
-      - clowder
-      - rabbitmq
-      - geoserver
-  
   web:
     build: nginx
     restart: always
@@ -149,5 +83,5 @@ networks:
   default:
     driver: bridge
     driver_opts:
-      com.docker.network.driver.mtu: 1424
+      com.docker.network.driver.mtu: 1454
 
