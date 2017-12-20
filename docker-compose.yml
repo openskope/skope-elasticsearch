@@ -3,27 +3,6 @@ version: '3.2'
 
 services:
 
-  # mongo database used to store metadata/data
-  mongo:
-    image: mongo:latest
-    restart: always
-    user: "0:1258"
-    ports:
-      - "27017:27017"
-    volumes:
-      - /mnt/skope:/projects/skope
-  
-  # rabbitmq to connect to extractors
-  rabbitmq:
-    image: rabbitmq:management
-    restart: always
-    user: "0:1258"
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - /mnt/skope:/projects/skope
-  
   # elasticsearch to allow indexing
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
@@ -38,9 +17,6 @@ services:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - "9200:9200"
-      - "9300:9300"
     volumes:
       - /mnt/skope:/projects/skope
   
@@ -49,43 +25,20 @@ services:
     build: geoserver
     restart: always
     user: "0:1258"
-    ports:
-      - "8080:8080"
     environment:
       JAVA_OPTS: "-Xmx1536M -XX:MaxPermSize=756M -Duser.timezone=GMT -Dorg.geotools.shapefile.datetime=true"
       GEOSERVER_DATA_DIR: "/projects/skope/staging/geoserver"
     volumes:
       - /mnt/skope:/projects/skope
   
-  clowder:
-    image: clowder/clowder:develop
-    restart: always
-    user: "0:1258"
-    environment:
-      CLOWDER_ADMIN: "jefft@illinois.edu"
-      TOOLMANAGER_URI: "http://192.168.99.100:8080"
-      MONGO_URI: "mongodb://mongo:27017/clowder"
-      RABBITMQ_URI: "amqp://rabbitmq:5672"
-      SMTP_HOST: smtp.ncsa.illinois.edu
-    depends_on:
-      - mongo
-      - rabbitmq
-    volumes:
-      - ./clowder/custom:/home/clowder/clowder/custom
-      - /mnt/skope:/projects/skope
-    ports:
-      - "9000:9000"
-
   web:
     build: nginx
     restart: always
     ports:
       - "80:80"
     depends_on:
-      - rabbitmq
       - elasticsearch
       - geoserver
-      - clowder
   
 networks:
   default:
