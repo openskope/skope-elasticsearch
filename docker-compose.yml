@@ -1,5 +1,5 @@
 # clowder server
-version: '3'
+version: '3.2'
 
 services:
 
@@ -11,7 +11,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
-      - /mnt/skope/staging/mongo:/data/db
+      - /mnt/skope:/projects/skope
   
   # rabbitmq to connect to extractors
   rabbitmq:
@@ -22,14 +22,22 @@ services:
       - "5672:5672"
       - "15672:15672"
     volumes:
-      - /mnt/skope/staging/rabbitmq:/var/lib/rabbitmq
+      - /mnt/skope:/projects/skope
   
   # elasticsearch to allow indexing
   elasticsearch:
-    image: elasticsearch:2
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
     restart: always
     user: "0:1258"
-    command: elasticsearch -Des.cluster.name="clowder"
+    environment:
+      - cluster.name=skope
+      - bootstrap.memory_lock=true
+      - path.data=/projects/skope/staging/esdata
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
       - "9200:9200"
       - "9300:9300"
