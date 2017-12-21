@@ -1,9 +1,10 @@
-version: '2.2'
+version: '3.4'
 
 services:
-  elasticsearch1:
+
+  elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-    container_name: elasticsearch1
+    container_name: elasticsearch
     environment:
       - cluster.name=skope-es-cluster-dev
       - bootstrap.memory_lock=true
@@ -16,21 +17,36 @@ services:
       - 9200:9200
     networks:
       - skope-es-net-dev
+    cap_add:
+      - IPC_LOCK
 
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-    container_name: elasticsearch2
-    environment:
-      - cluster.name=skope-es-cluster-dev
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch1"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+  # elasticsearch2:
+  #   image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+  #   container_name: elasticsearch2
+  #   environment:
+  #     - cluster.name=skope-es-cluster-dev
+  #     - bootstrap.memory_lock=true
+  #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+  #     - "discovery.zen.ping.unicast.hosts=elasticsearch"
+  #     - http.enabled=false
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   networks:
+  #     - skope-es-net-dev
+  #   cap_add:
+  #     - IPC_LOCK
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.1.1
+    container_name: kibana
+    ports:
+      - 5601:5601
     networks:
       - skope-es-net-dev
+    links:
+      - elasticsearch
 
 networks:
     skope-es-net-dev:
