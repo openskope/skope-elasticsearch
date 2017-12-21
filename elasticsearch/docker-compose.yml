@@ -1,10 +1,36 @@
 version: '2.2'
 
 services:
-  elasticsearch:
+  elasticsearch1:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
-    container_name: elasticsearch
+    container_name: elasticsearch1
     environment:
       - cluster.name=skope-es-cluster-dev
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
       - 9200:9200
+    networks:
+      - skope-es-net-dev
+
+  elasticsearch2:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    container_name: elasticsearch2
+    environment:
+      - cluster.name=skope-es-cluster-dev
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "discovery.zen.ping.unicast.hosts=elasticsearch1"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    networks:
+      - skope-es-net-dev
+
+networks:
+    skope-es-net-dev:
