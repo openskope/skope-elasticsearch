@@ -1,0 +1,10 @@
+version: '2.2'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.1.1
+    container_name: elasticsearch
+    environment:
+      - cluster.name=skope-es-cluster-dev
+    ports:
+      - 9200:9200
