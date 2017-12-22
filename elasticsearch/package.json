@@ -5,13 +5,15 @@
   "scripts": {
     "start": "docker-compose up",
     "stop": "docker-compose down",
-    "reset": "docker rm -f elasticsearch kibana",
+    "load": "node load-data.js",
+    "rm": "docker rm -f elasticsearch kibana",
     "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "elasticsearch": "^14.0.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
