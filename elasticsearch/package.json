@@ -6,6 +6,7 @@
     "start": "docker-compose up",
     "stop": "docker-compose down",
     "load": "node load-data.js",
+    "isup": "node is-up.js",
     "rm": "docker rm -f elasticsearch kibana",
     "test": "jest --watch"
   },
@@ -13,11 +14,14 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "elasticsearch": "^14.0.0",
     "babel-core": "^6.26.0",
     "babel-jest": "^21.2.0",
     "babel-loader": "^7.1.2",
     "cross-env": "^5.1.1",
-    "jest": "^21.2.1"
+    "elasticsearch": "^14.0.0",
+    "frisby": "^2.0.10",
+    "jest": "^21.2.1",
+    "babel-cli": "^6.26.0",
+    "babel-preset-node6": "^11.0.0"
   }
 }
