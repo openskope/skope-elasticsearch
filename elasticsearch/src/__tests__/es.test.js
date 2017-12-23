@@ -17,7 +17,7 @@ describe("When elasticsearch is running", () => {
 });
 
 describe("When a new document is added to elasticsearch", () => {
-
+ 
     it ('PUT new document should return a status of 201', function (done) {
 
         frisby.put('http://localhost:9200/megacorp/employee/12', {
@@ -40,11 +40,11 @@ describe("When a new document is added to elasticsearch", () => {
         .expect('status', 200)
         .expect('json', {
             "_source": {
-                "first_name" : "John",
-                "last_name" :  "Smith",
-                "age" :        25,
-                "about" :      "I love to go rock climbing",
-                "interests": [ "sports", "music" ]
+            "first_name" : "John",
+            "last_name" :  "Smith",
+            "age" :        25,
+            "about" :      "I love to go rock climbing",
+            "interests": [ "sports", "music" ]
         }})
         .done(done);
     });
