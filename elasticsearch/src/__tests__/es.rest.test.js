@@ -33,9 +33,11 @@ describe("When elasticsearch is running", () => {
 describe("When a new document is added to elasticsearch", async () => {
 
     var client = getRestClient();
-    
-    it ('POST should return result created', async function(done) {
-        var response = await client({ 
+    var response;
+    var id;
+
+    beforeAll(async () => {
+        response = await client({ 
             method: 'POST', 
             path: 'http://localhost:9200/megacorp/employee/',
             entity: {
@@ -46,9 +48,18 @@ describe("When a new document is added to elasticsearch", async () => {
                 "interests": [ "sports", "music" ]
             }
         });
+        id = response.entity._id;
+    });
 
+    it ('http status code should be 201 (created)', async () => {
         expect(response.status.code).toBe(201);
+    });
+
+    it ("elasticsearch result should be 'created'" , async () => {
         expect(response.entity.result).toBe("created");
-        done();
+    });
+
+    it ('version of created document should be 1', async () => {
+        expect(response.entity._version).toBe(1);
     });
 });
