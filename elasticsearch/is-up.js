@@ -1,19 +1,7 @@
-var elasticsearch = require('elasticsearch');
-
-async function isup() {
-  try {
-    var client = new elasticsearch.Client({
-      host: 'localhost:9200'
-    });
-    await client.ping({ requestTimeout: 100 });
-    return true;
-  } catch(e) {
-    return false;
-  }
-}
+var es = require('./src/es');
 
 async function main() {
-  if (await isup()) {
+  if (await es.isup({host: 'localhost:9200'})) {
     console.log('elasticsearch cluster is UP');
   } else {
     console.log('elasticsearch cluster is DOWN');
