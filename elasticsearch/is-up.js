@@ -1,16 +1,23 @@
 var elasticsearch = require('elasticsearch');
 
-var client = new elasticsearch.Client({
-  host: 'localhost:9200'
-});
+async function isup() {
+  try {
+    var client = new elasticsearch.Client({
+      host: 'localhost:9200'
+    });
+    await client.ping({ requestTimeout: 100 });
+    return true;
+  } catch(e) {
+    return false;
+  }
+}
 
-client.ping({
-    // ping usually has a 3000ms timeout
-    requestTimeout: 1000
-  }, function (error) {
-    if (error) {
-      console.log('elasticsearch cluster is down');
-    } else {
-      console.log('all is well');
-    }
-  });
+async function main() {
+  if (await isup()) {
+    console.log('elasticsearch cluster is UP');
+  } else {
+    console.log('elasticsearch cluster is DOWN');
+  }
+} 
+
+main();
