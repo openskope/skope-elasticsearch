@@ -2,9 +2,7 @@ const elasticsearch = require('elasticsearch');
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
-function getRestClient() {
-    return rest.wrap(mime, { mime: 'application/json' } );
-}
+const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 async function isup(params) {
   try {
@@ -17,16 +15,14 @@ async function isup(params) {
 }
 
 async function refreshAll(host) {
-  var client = getRestClient();
-  await client({
+  await callRESTService({
       method: 'POST',
       path: host + '/_refresh'            
   });
 }
 
 async function indexExists(host, index) {
-  var client = getRestClient();
-  var response = await client({
+  var response = await callRESTService({
       method: 'GET',
       path: host + "/" + index
   });
@@ -34,15 +30,12 @@ async function indexExists(host, index) {
 }
 
 async function deleteIndex(host, index) {
-
-  var client = getRestClient();
-    await client({
+    await callRESTService({
         method: 'DELETE',
         path:  host + "/" + index
     });
     refreshAll(host);
     while (await indexExists(host, index));
-      
 }
 
 module.exports.deleteIndex = deleteIndex;

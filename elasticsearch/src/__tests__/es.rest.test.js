@@ -2,47 +2,50 @@ const es = require('../es');
 const rest = require('rest');
 const mime = require('rest/interceptor/mime');
 
-function getRestClient() {
-    return rest.wrap(mime, { mime: 'application/json' } );
-}
+const esClusterUrl = 'http://localhost:9200';
+
+const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 describe("When elasticsearch is running", () => {
 
-    var client = getRestClient();
-
     it('es.isup() function should indicate elasticsearch cluster is up', async () => {
-        expect(
-            await es.isup({host: 'localhost:9200'})
-        ).toBe(true);
+        var clusterIsUp = await es.isup({
+            host: esClusterUrl
+        });
+        expect(clusterIsUp).toBe(true);
     });
 
     it ('GET / should return cluster name', async function() {
-        var response = await client({ method: 'GET', path: 'http://localhost:9200/' });
+        var response = await callRESTService({
+            method: 'GET',
+            path: esClusterUrl
+        });
         expect(response.status.code).toBe(200);
         expect(response.entity.cluster_name).toBe("skope-es-cluster-dev");
     });
 
     it ('GET /_cluster/health should return cluster name', async function() {
-        var response = await client({ method: 'GET', path: 'http://localhost:9200/_cluster/health' });
+        var response = await callRESTService({ 
+            method: 'GET', 
+            path: esClusterUrl + '/_cluster/health'
+        });
         expect(response.status.code).toBe(200);
         expect(response.entity.cluster_name).toBe("skope-es-cluster-dev");
     });
-
 });
 
 describe("When a new document with a specified id is added to elasticsearch", async () => {
 
-    var client = getRestClient();
     var response;
     var id;
 
     beforeAll(async () => {
 
-       await es.deleteIndex('http://localhost:9200', 'megacorp');
+       await es.deleteIndex(esClusterUrl, 'megacorp');
 
-        response = await client({
+        response = await callRESTService({
             method: 'POST', 
-            path: 'http://localhost:9200/megacorp/employee/1',
+            path: esClusterUrl + '/megacorp/employee/1',
             entity: {
                 "first_name" : "John",
                 "last_name" :  "Smith",
