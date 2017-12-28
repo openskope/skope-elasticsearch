@@ -30,16 +30,19 @@ describe("When elasticsearch is running", () => {
 
 });
 
-describe("When a new document is added to elasticsearch", async () => {
+describe("When a new document with a specified id is added to elasticsearch", async () => {
 
     var client = getRestClient();
     var response;
     var id;
 
     beforeAll(async () => {
-        response = await client({ 
+
+       await es.deleteIndex('http://localhost:9200', 'megacorp');
+
+        response = await client({
             method: 'POST', 
-            path: 'http://localhost:9200/megacorp/employee/',
+            path: 'http://localhost:9200/megacorp/employee/1',
             entity: {
                 "first_name" : "John",
                 "last_name" :  "Smith",
@@ -48,7 +51,6 @@ describe("When a new document is added to elasticsearch", async () => {
                 "interests": [ "sports", "music" ]
             }
         });
-        id = response.entity._id;
     });
 
     it ('http status code should be 201 (created)', async () => {
@@ -57,6 +59,10 @@ describe("When a new document is added to elasticsearch", async () => {
 
     it ("elasticsearch result should be 'created'" , async () => {
         expect(response.entity.result).toBe("created");
+    });
+
+    it ('id of created document should be the id that was assigned', async () => {
+        expect(response.entity._id).toBe('1')
     });
 
     it ('version of created document should be 1', async () => {
