@@ -40,3 +40,4 @@ async function deleteIndex(host, index) {
 
 module.exports.deleteIndex = deleteIndex;
 module.exports.isup = isup;
+module.exports.refreshAll = refreshAll;
