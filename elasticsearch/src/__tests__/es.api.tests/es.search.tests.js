@@ -7,24 +7,25 @@ const esClusterUrl = 'http://localhost:9200';
 const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 var document = [{
-    "first_name" : "John",
-    "last_name" :  "Smith",
-    "age" :        25,
-    "about" :      "I love to go rock climbing",
-    "interests": [ "sports", "music" ]
-}, {
-    "first_name" :  "Jane",
-    "last_name" :   "Smith",
-    "age" :         32,
-    "about" :       "I like to collect rock albums",
-    "interests":  [ "music" ]
-}, {
-    "first_name" :  "Douglas",
-    "last_name" :   "Fir",
-    "age" :         35,
-    "about":        "I like to build cabinets",
-    "interests":  [ "forestry" ]
-}];
+        "first_name" : "John",
+        "last_name" :  "Smith",
+        "age" :        25,
+        "about" :      "I love to go rock climbing",
+        "interests": [ "sports", "music" ]
+    }, {
+        "first_name" :  "Jane",
+        "last_name" :   "Smith",
+        "age" :         32,
+        "about" :       "I like to collect rock albums",
+        "interests":  [ "music" ]
+    }, {
+        "first_name" :  "Douglas",
+        "last_name" :   "Fir",
+        "age" :         35,
+        "about":        "I like to build cabinets",
+        "interests":  [ "forestry" ]
+    }
+];
 
 beforeAll(async () => {
     
@@ -86,17 +87,13 @@ describe("When 3 documents are found via search for all documents in an index", 
 
     beforeAll(async () => {
 
-        await callRESTService({
-            method: 'POST', 
-            path: esClusterUrl + '/megacorp/employee/1',
-            entity: document[1]
-        });
-
-        await callRESTService({
-            method: 'POST', 
-            path: esClusterUrl + '/megacorp/employee/2',
-            entity: document[2]
-        });
+        for (var id = 1; id <= 2; ++id) {
+            await callRESTService({
+                method: 'POST', 
+                path: esClusterUrl + '/megacorp/employee/' + id,
+                entity: document[id]
+            });
+        };
 
         await es.refreshAll(esClusterUrl);
 
@@ -119,8 +116,137 @@ describe("When 3 documents are found via search for all documents in an index", 
     });
 
     it ('the score of each hit should be 1', async () => {
-        expect(response.entity.hits.hits[0]._score).toBe(1);
-        expect(response.entity.hits.hits[1]._score).toBe(1);
-        expect(response.entity.hits.hits[2]._score).toBe(1);
+        [0,1,2].map( (i) => {
+            expect(response.entity.hits.hits[i]._score).toBe(1);
+        });
     });
+
+});
+
+describe("When 2 documents are found via full text search of one field", async () => {
+    
+    var response;
+    var hits;
+    
+    beforeAll(async () => {
+
+        response = await callRESTService({
+            method: 'GET',
+            path: esClusterUrl + '/megacorp/_search',
+            entity: {
+                "query" : {
+                    "match" : {
+                        "last_name" : "Smith"
+                    }
+                }
+            }
+        });
+
+        hits = response.entity.hits.hits;
+    });
+
+    it ('the returned http status code should be 200 - OK', async () => {
+        expect(response.status.code).toBe(200);
+    });
+
+    it ('the total number of search hits should be 2', async () => {
+        expect(response.entity.hits.total).toBe(2);
+    });
+
+    it ('the ids of the two returned documents are those of the matching documents', async () => {
+        expect([hits[0]._id, hits[1]._id]).toEqual(expect.arrayContaining(['0','1']));
+    });
+
+    it ('the two matching documents are returned in the hits', async () => {
+        expect([hits[0]._source, hits[1]._source]).toEqual(expect.arrayContaining([document[0],document[1]]));
+    });
+
+});
+
+describe("When 2 documents is found via search with a filter", async () => {
+    
+    var response;
+    var hits;
+
+    beforeAll(async () => {
+
+        response = await callRESTService({
+            method: 'GET',
+            path: esClusterUrl + '/megacorp/_search',
+            entity: {
+                "query" : {
+                    "bool" : {
+                        "filter" : {
+                            "range" : {
+                                "age" : { "gt" : 30 } 
+                            }
+                        },
+                        "must": {
+                            "match_all" : {}
+                        }    
+                    }
+                }
+            }
+        });
+
+        hits = response.entity.hits.hits;        
+    });
+
+    it ('the returned http status code should be 200 - OK', async () => {
+        expect(response.status.code).toBe(200);
+    });
+
+    it ('the total number of search hits should be 2', async () => {
+        expect(response.entity.hits.total).toBe(2);
+    });
+
+    it ('the ids of the two documents are those expected', async () => {
+        expect([hits[0]._id, hits[1]._id]).toEqual(expect.arrayContaining(['1','2']));
+    });
+
+    it ('the two matching documents are returned in the hits', async () => {
+        expect([hits[0]._source, hits[1]._source]).toEqual(expect.arrayContaining([document[1],document[2]]));
+    });
+
+});
+
+describe("When 1 documents is found via compound search of a match and a filter", async () => {
+    
+    var response;
+    var hits;
+
+    beforeAll(async () => {
+
+        response = await callRESTService({
+            method: 'GET',
+            path: esClusterUrl + '/megacorp/_search',
+            entity: {
+                "query" : {
+                    "bool" : {
+                        "filter" : {
+                            "range" : {
+                                "age" : { "gt" : 30 } 
+                            }
+                        },
+                        "must": {
+                            "match" : {
+                                "last_name" : "Smith"
+                            }
+                        }    
+                    }
+                }
+            }
+        });
+
+        hits = response.entity.hits.hits;        
+    });
+
+    it ('the returned http status code should be 200 - OK', async () => {
+        expect(response.status.code).toBe(200);
+    });
+
+    it ('the total number of search hits should be 2', async () => {
+        expect(response.entity.hits.total).toBe(1);
+    });
+
 });
