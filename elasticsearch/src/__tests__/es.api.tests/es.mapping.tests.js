@@ -68,3 +68,82 @@ describe("When an implicitly created mapping is retrieved ", async () => {
     });
 });
 
+describe("When an explicit mapping is created and retrieved ", async () => {
+    
+    var mappingPutResponse;
+    var mappingGetResponse;
+
+    beforeAll(async () => {
+        
+        await es.deleteIndex(esClusterUrl, 'megacorp');
+        
+        mappingPutResponse = await callRESTService({
+            method: 'PUT', 
+            path: esClusterUrl + '/megacorp',
+            entity: {
+                "mappings": {
+                    "employee" : {
+                        "properties": {
+                            "about": {
+                                "type": "text"
+                            },
+                            "age": {
+                                "type": "text" 
+                            }, 
+                            "first_name": {
+                                "type": "text",
+                            }, 
+                            "interests": {
+                                "type": "text",
+                            }, 
+                            "last_name": {
+                                "type": "text",
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        mappingGetResponse = await callRESTService({
+            method: 'GET', 
+            path: esClusterUrl + '/megacorp/_mapping/employee/'
+        });
+    });        
+
+    it ('the http status code for the mapping PUT request is 200 (ok)', async () => {
+        expect(mappingPutResponse.status.code).toBe(200);
+    });
+
+    it ('the http status code for the mapping GET request is 200 (ok)', async () => {
+        expect(mappingGetResponse.status.code).toBe(200);
+    });
+
+    it ('a single mapping is returned', async () => {
+        expect(Object.keys(mappingGetResponse.entity.megacorp.mappings).length).toBe(1);
+    });
+
+    it ('the mapping returned by GET matches that assigned by PUT', async () => {
+        expect(mappingGetResponse.entity.megacorp.mappings.employee).toEqual({
+            "properties": {
+                "about": {
+                    "type": "text"
+                },
+                "age": {
+                    "type": "text"
+                },
+                "first_name": {
+                    "type": "text"
+                }, 
+                "interests": {
+                    "type": "text"
+                }, 
+                "last_name": {
+                    "type": "text"
+                }
+            }
+        });
+    });
+
+});
+
