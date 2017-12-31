@@ -5,8 +5,25 @@ const mime = require('rest/interceptor/mime');
 const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 async function indexFile(host, index, type, filename) {
-    const textDocument = fs.readFileSync(filename, 'utf8');
-    const jsonDocument = JSON.parse(textDocument);
+    
+    var textDocument;    
+    try {
+        textDocument = fs.readFileSync(filename, 'utf8');
+    }
+    catch(e) {
+        throw `File '${filename}' could not be read.`
+    }
+
+    var jsonDocument;
+    try { 
+        jsonDocument = JSON.parse(textDocument);
+    } catch(e) {
+        throw {
+            'message': 'Error parsing JSON document',
+            'details': e.message
+        }
+    }
+
     return await callRESTService({
         method: 'POST', 
         path: host + "/" + index + "/" + type,
