@@ -210,7 +210,7 @@ describe("When 2 documents is found via search with a filter", async () => {
 
 });
 
-describe("When 1 documents is found via compound search of a match and a filter", async () => {
+describe("When 1 document is found via compound search of a match and a filter", async () => {
     
     var response;
     var hits;
@@ -241,12 +241,20 @@ describe("When 1 documents is found via compound search of a match and a filter"
         hits = response.entity.hits.hits;        
     });
 
-    it ('the returned http status code should be 200 - OK', async () => {
+    it ('the returned http status code is 200 (OK)', async () => {
         expect(response.status.code).toBe(200);
     });
 
-    it ('the total number of search hits should be 2', async () => {
+    it ('the total number of search hits is 1', async () => {
         expect(response.entity.hits.total).toBe(1);
+    });
+
+    it ('the id is that of the matching document', async () => {
+        expect(response.entity.hits.hits[0]._id).toBe('1');
+    });
+
+    it ('the returned document matches that stored in elasticsearch', async () => {
+        expect(response.entity.hits.hits[0]._source).toEqual(document[1]);
     });
 
 });
