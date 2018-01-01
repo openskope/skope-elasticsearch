@@ -13,7 +13,7 @@ describe("When a JSON document is read from a file and indexed", async () => {
     var response;
     beforeAll(async () => {    
         response = await loader.indexFile(esClusterUrl, 'megacorp', 'employee', 
-            'src/__tests__/es.loader.tests/data/employee1.json');
+            'src/__tests__/loader.tests/data/employee1.json');
     });
 
     it ('http status code should be 201 (created)', async () => {
@@ -55,7 +55,7 @@ describe("When a malformed JSON file is read", async () => {
         var exception;
         try { 
             await loader.indexFile(esClusterUrl, 'megacorp', 'employee', 
-                'src/__tests__/es.loader.tests/data/malformed.json');
+                'src/__tests__/loader.tests/data/malformed.json');
             fail();
         } catch(e) {
             exception = e;
