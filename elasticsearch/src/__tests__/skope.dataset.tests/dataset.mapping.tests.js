@@ -7,60 +7,35 @@ const esClusterUrl = 'http://localhost:9200';
 
 const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
-describe("When an implicitly created mapping is retrieved ", async () => {
+var mappingPutResponse;
+var mappingGetResponse;
+var datasetMappingJson;
+var indexingResponse;
 
-    var response;
-
-    beforeAll(async () => {
-        
-        await es.deleteIndex(esClusterUrl, 'skope');
-        
-        response = await loader.indexDocument(esClusterUrl, 'skope', 'dataset', 
-            'src/__tests__/skope.dataset.tests/data/noaa-recon-19783-gdd.json');
-
-        await es.refreshAll(esClusterUrl);
+beforeAll(async () => {
     
-        response = await callRESTService({
-            method: 'GET', 
-            path: esClusterUrl + '/skope/_mapping/dataset/'
-        });
+    await es.deleteIndex(esClusterUrl, 'skope');
+    
+    datasetMappingJson = loader.loadJsonFromFile(
+        'src/__tests__/skope.dataset.tests/data/skope.dataset.mapping.json');
+
+    mappingPutResponse = await callRESTService({
+        method: 'PUT', 
+        path: esClusterUrl + '/skope',
+        entity: datasetMappingJson
     });
 
-    it ('the http status code is 200 (ok)', async () => {
-        expect(response.status.code).toBe(200);
+    mappingGetResponse = await callRESTService({
+        method: 'GET', 
+        path: esClusterUrl + '/skope/_mapping/dataset/'
     });
 
-    it ('a single mapping is returned', async () => {
-        expect(Object.keys(response.entity.skope.mappings).length).toBe(1);
-    });
-
-});
+    indexingResponse = await loader.indexDocument(esClusterUrl, 'skope', 'dataset', 
+        'src/__tests__/skope.dataset.tests/data/noaa-recon-19783-gdd.json');
+});        
 
 describe("When an explicit mapping is created and retrieved ", async () => {
     
-    var mappingPutResponse;
-    var mappingGetResponse;
-    var datasetMappingJson;
-
-    beforeAll(async () => {
-        
-        await es.deleteIndex(esClusterUrl, 'skope');
-        
-        datasetMappingJson = loader.loadJsonFromFile(
-            'src/__tests__/skope.dataset.tests/data/skope.dataset.mapping.json');
-
-        mappingPutResponse = await callRESTService({
-            method: 'PUT', 
-            path: esClusterUrl + '/skope',
-            entity: datasetMappingJson
-        });
-
-        mappingGetResponse = await callRESTService({
-            method: 'GET', 
-            path: esClusterUrl + '/skope/_mapping/dataset/'
-        });
-    });        
-
     it ('the http status code for the mapping PUT request is 200 (ok)', async () => {
         expect(mappingPutResponse.status.code).toBe(200);
     });
@@ -79,3 +54,23 @@ describe("When an explicit mapping is created and retrieved ", async () => {
 
 });
 
+describe("When a dataset document is indexed after the mapping is created", async () => {
+
+    it ('http status code should be 201 (created)', async () => {
+        expect(indexingResponse.status.code).toBe(201);
+    });
+
+    it ("elasticsearch result should be 'created'" , async () => {
+        expect(indexingResponse.entity.result).toBe("created");
+    });
+
+    it ('the metadata returned for the indexed document should be what was assigned', async () => {
+        expect(indexingResponse.entity._index).toBe('skope')
+        expect(indexingResponse.entity._type).toBe('dataset')
+    });
+
+    it ('version of indexed document should be 1', async () => {
+        expect(indexingResponse.entity._version).toBe(1);
+    });
+
+});
