@@ -11,8 +11,8 @@
                         "citation": { "type": "text" }                        
                     }
                 },
-                "revised":  { "type": "text" },
-                "status":  { "type": "text" },
+                "revised": {  "type": "date", "format": "yyyy-MM-dd" },
+                "status":  { "type": "keyword" },
                 "datatypes": { "type": "text" },
                 "publisher": { "type": "text" },
                 "download":  { "type": "text" },
@@ -23,12 +23,12 @@
                 "temporalext":  { "type": "text" },
                 "temporal_extent":  {
                     "properties": {
-                        "start": { "type": "text" },
-                        "end": { "type": "text" }
+                        "start": {  "type": "date", "format": "yyyy-MM-dd" },
+                        "end":  {  "type": "date", "format": "yyyy-MM-dd" }
                     }
                 },
-                "temporalres":  { "type": "text" },
-                "model_title":  { "type": "text" },
+                "temporalres":  { "type": "keyword" },
+                "model_title":  { "type": "keyword" },
                 "layer_wms":  { "type": "text" }
             }
         }
