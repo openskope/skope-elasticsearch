@@ -8,11 +8,11 @@
     },
     "revised"       : "2016-04-01",
     "status"        : "published",
-    "datatypes"     : "May-September Growing-degree Days (GDD)",
+    "datatypes"     : "Net Water-year Precipitation (previous October - current November)",
     "publisher"     : "NCDC-Paleoclimatology",
     "download"      : "https://www1.ncdc.noaa.gov/pub/data/paleo/treering/reconstructions/northamerica/usa/bocinsky2016/",
-    "keywords"      : ["Growing Degree Days", "Reconstruction"],
-    "variable"      : "growing-degree days",
+    "keywords"      : ["Water-year Precipitation", "Reconstruction"],
+    "variable"      : "water-year Precipitation",
     "spatial_extent"    : {
         "type"          : "envelope", 
         "coordinates"   : [ 
