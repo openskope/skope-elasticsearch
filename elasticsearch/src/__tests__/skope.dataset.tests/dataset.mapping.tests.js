@@ -40,20 +40,19 @@ describe("When an explicit mapping is created and retrieved ", async () => {
     
     var mappingPutResponse;
     var mappingGetResponse;
+    var datasetMappingJson;
 
     beforeAll(async () => {
         
         await es.deleteIndex(esClusterUrl, 'skope');
         
-        const mappings = loader.loadJsonFromFile(
+        datasetMappingJson = loader.loadJsonFromFile(
             'src/__tests__/skope.dataset.tests/data/skope.dataset.mapping.json');
 
         mappingPutResponse = await callRESTService({
             method: 'PUT', 
             path: esClusterUrl + '/skope',
-            entity: {
-                "mappings": mappings
-            }
+            entity: datasetMappingJson
         });
 
         mappingGetResponse = await callRESTService({
@@ -75,55 +74,7 @@ describe("When an explicit mapping is created and retrieved ", async () => {
     });
 
     it ('the mapping returned by GET matches that assigned by PUT', async () => {
-        expect(mappingGetResponse.entity.skope.mappings.dataset).toEqual( {
-            "properties": {
-                    "study": {
-                        "type": "text"
-                    },
-                    "revised": {
-                        "type": "text"
-                    },
-                    "status": {
-                        "type": "text"
-                    },
-                    "datatypes": {
-                        "type": "text"
-                    },
-                    "publisher": {
-                        "type": "text"
-                    },
-                    "download": {
-                        "type": "text"
-                    },
-                    "keywords": {
-                        "type": "text"
-                    },
-                    "variable": {
-                        "type": "text"
-                    },
-                    "spatial_extent": {
-                        "type": "text"
-                    },
-                    "spatialres": {
-                        "type": "text"
-                    },
-                    "temporalext": {
-                        "type": "text"
-                    },
-                    "temporal_extent": {
-                        "type": "text"
-                    },
-                    "temporalres": {
-                        "type": "text"
-                    },
-                    "model_title": {
-                        "type": "text"
-                    },
-                    "layer_wms": {
-                        "type": "text"
-                    }
-                }
-        });
+        expect(mappingGetResponse.entity.skope).toEqual( datasetMappingJson );
     });
 
 });

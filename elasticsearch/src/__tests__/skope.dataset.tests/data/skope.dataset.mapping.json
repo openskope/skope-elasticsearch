@@ -1,50 +1,52 @@
 {
-    "dataset": {
-        "properties": {
-            "study": {
-                "type": "text"
-            },
-            "revised": {
-                "type": "text"
-            },
-            "status": {
-                "type": "text"
-            },
-            "datatypes": {
-                "type": "text"
-            },
-            "publisher": {
-                "type": "text"
-            },
-            "download": {
-                "type": "text"
-            },
-            "keywords": {
-                "type": "text"
-            },
-            "variable": {
-                "type": "text"
-            },
-            "spatial_extent": {
-                "type": "text"
-            },
-            "spatialres": {
-                "type": "text"
-            },
-            "temporalext": {
-                "type": "text"
-            },
-            "temporal_extent": {
-                "type": "text"
-            },
-            "temporalres": {
-                "type": "text"
-            },
-            "model_title": {
-                "type": "text"
-            },
-            "layer_wms": {
-                "type": "text"
+    "mappings": {
+        "dataset": {
+            "properties": {
+                "study": {
+                    "type": "text"
+                },
+                "revised": {
+                    "type": "text"
+                },
+                "status": {
+                    "type": "text"
+                },
+                "datatypes": {
+                    "type": "text"
+                },
+                "publisher": {
+                    "type": "text"
+                },
+                "download": {
+                    "type": "text"
+                },
+                "keywords": {
+                    "type": "text"
+                },
+                "variable": {
+                    "type": "text"
+                },
+                "spatial_extent": {
+                    "type": "text"
+                },
+                "spatialres": {
+                    "type": "text"
+                },
+                "temporalext": {
+                    "type": "text"
+                },
+                "temporal_extent": {
+                    "type": "text"
+                },
+                "temporalres": {
+                    "type": "text"
+                },
+                "model_title": {
+                    "type": "text"
+                },
+                "layer_wms": {
+                    "type": "text"
+                }
             }
         }
     }
