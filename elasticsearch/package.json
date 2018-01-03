@@ -1,0 +1,32 @@
+{
+  "name": "skope-elasticsearch",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "docker-compose up",
+    "stop": "docker-compose down",
+    "load": "node load-data.js",
+    "isup": "node is-up.js",
+    "rm": "docker rm -f elasticsearch kibana",
+    "test": "jest --watch --runInBand"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^21.2.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-node6": "^11.0.0",
+    "babel-preset-react-app": "^3.1.0",
+    "cross-env": "^5.1.1",
+    "elasticsearch": "^14.0.0",
+    "frisby": "^2.0.10",
+    "jest": "^21.2.1",
+    "rest": "^2.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}

@@ -1,0 +1,36 @@
+{
+    "mappings": {
+        "dataset": {
+            "properties": {
+                "study": {
+                    "properties": {
+                        "id": { "type": "text" },
+                        "title": { "type": "text" },
+                        "authors": { "type": "text" },
+                        "description": { "type": "text" },
+                        "citation": { "type": "text" }                        
+                    }
+                },
+                "revised": {  "type": "date", "format": "yyyy-MM-dd" },
+                "status":  { "type": "keyword" },
+                "datatypes": { "type": "text" },
+                "publisher": { "type": "text" },
+                "download":  { "type": "text" },
+                "keywords":  { "type": "text" },
+                "variable":  { "type": "text" },
+                "spatial_extent": { "type": "geo_shape" },
+                "spatialres":  { "type": "text" },
+                "temporalext":  { "type": "text" },
+                "temporal_extent":  {
+                    "properties": {
+                        "start": {  "type": "date", "format": "yyyy-MM-dd" },
+                        "end":  {  "type": "date", "format": "yyyy-MM-dd" }
+                    }
+                },
+                "temporalres":  { "type": "keyword" },
+                "model_title":  { "type": "keyword" },
+                "layer_wms":  { "type": "text" }
+            }
+        }
+    }
+}

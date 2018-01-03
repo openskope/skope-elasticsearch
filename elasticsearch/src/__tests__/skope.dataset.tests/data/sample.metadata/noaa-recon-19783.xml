@@ -1,0 +1,139 @@
+<?xml version="1.0"?>
+<DIF xsi:schemaLocation="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/ http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/dif_v9.8.4.xsd" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns="http://gcmd.gsfc.nasa.gov/Aboutus/xml/dif/">
+    <Entry_ID>noaa-recon-19783</Entry_ID>
+    <Entry_Title>SW USA 2000 Year Growing Degree Days and Precipitation Reconstructions</Entry_Title>
+    <Data_Set_Citation>
+        <Dataset_Creator>Bocinsky, R.K.; Rush, J.; Kintigh, K.W.; Kohler, T.A.; </Dataset_Creator>
+        <Dataset_Title>SW USA 2000 Year Growing Degree Days and Precipitation Reconstructions</Dataset_Title>
+        <Dataset_Release_Date>2016-04-01</Dataset_Release_Date>
+        <Dataset_Publisher>NCDC-Paleoclimatology</Dataset_Publisher>
+        <Data_Presentation_Form>Online Files</Data_Presentation_Form>
+        <Online_Resource>https://www.ncdc.noaa.gov/paleo/study/19783</Online_Resource>
+    </Data_Set_Citation>
+    <Personnel>
+        <Role>Investigator</Role>
+        <First_Name>R.K.</First_Name>
+        <Last_Name>Bocinsky</Last_Name>
+    </Personnel>
+    <Personnel>
+        <Role>Investigator</Role>
+        <First_Name>J.</First_Name>
+        <Last_Name>Rush</Last_Name>
+    </Personnel>
+    <Personnel>
+        <Role>Investigator</Role>
+        <First_Name>K.W.</First_Name>
+        <Last_Name>Kintigh</Last_Name>
+    </Personnel>
+    <Personnel>
+        <Role>Investigator</Role>
+        <First_Name>T.A.</First_Name>
+        <Last_Name>Kohler</Last_Name>
+    </Personnel>
+    <Parameters>
+        <Category>earth science</Category>
+        <Topic>paleoclimate</Topic>
+        <Term>reconstructions</Term>
+        <Variable_Level_1>precipitation</Variable_Level_1>
+    </Parameters>
+    <ISO_Topic_Category>geoscientificInformation</ISO_Topic_Category>
+    <Keyword>Precipitation Reconstruction</Keyword>
+    <Paleo_Temporal_Coverage>
+        <Paleo_Start_Date>0 AD</Paleo_Start_Date>
+        <Paleo_Stop_Date>2000 AD</Paleo_Stop_Date>
+    </Paleo_Temporal_Coverage>
+    <Paleo_Temporal_Coverage>
+        <Paleo_Start_Date>1950 cal yr BP</Paleo_Start_Date>
+        <Paleo_Stop_Date>-50 cal yr BP</Paleo_Stop_Date>
+    </Paleo_Temporal_Coverage>
+    <Data_Set_Progress>Complete</Data_Set_Progress>
+    <Spatial_Coverage>
+        <Southernmost_Latitude>31</Southernmost_Latitude>
+        <Northernmost_Latitude>43</Northernmost_Latitude>
+        <Westernmost_Longitude>-115</Westernmost_Longitude>
+        <Easternmost_Longitude>-102</Easternmost_Longitude>
+    </Spatial_Coverage>
+    <Location>
+        <Location_Category>Continent</Location_Category>
+        <Location_Type>North America</Location_Type>
+        <Location_Subregion1>United States Of America</Location_Subregion1>
+        <Detailed_Location>Southwestern USA::LATITUDE ::LONGITUDE </Detailed_Location>
+    </Location>
+    <Access_Constraints>None</Access_Constraints>
+    <Use_Constraints>Please cite original references when using this data.</Use_Constraints>
+    <Data_Set_Language>English</Data_Set_Language>
+    <Data_Center>
+        <Data_Center_Name>
+            <Short_Name>DOC/NOAA/NESDIS/NCEI</Short_Name>
+            <Long_Name>National Centers for Environmental Information, NESDIS, NOAA, U.S. Department of Commerce </Long_Name>
+        </Data_Center_Name>
+        <Data_Center_URL>https://www.ncdc.noaa.gov/data-access/paleoclimatology-data</Data_Center_URL>
+        <Personnel>
+            <Role>DATA Center Contact</Role>
+            <First_Name>Bruce</First_Name>
+            <Last_Name>Bauer</Last_Name>
+            <Email>bruce.a.bauer@noaa.gov</Email>
+            <Email>paleo@noaa.gov</Email>
+            <Phone>303-497-6280</Phone>
+            <Fax>303-497-6513</Fax>
+            <Contact_Address>
+                <Address>325 Broadway, E/CC23</Address>
+                <City>Boulder</City>
+                <Province_or_State>CO</Province_or_State>
+                <Postal_Code>80305-3328</Postal_Code>
+                <Country>USA</Country>
+            </Contact_Address>
+        </Personnel>
+    </Data_Center>
+    <Distribution>
+        <Distribution_Media>online</Distribution_Media>
+        <Distribution_Format>ASCII</Distribution_Format>
+    </Distribution>
+    <Reference>
+        <Author>R. Kyle Bocinsky, Johnathan Rush, Keith W. Kintigh and Timothy A. Kohler </Author>
+        <Publication_Date>2016</Publication_Date>
+        <Title>Exploration and exploitation in the macrohistory of the pre-Hispanic Pueblo Southwest</Title>
+        <Series>Science Advances</Series>
+        <Edition>e1501532</Edition>
+        <Volume>2</Volume>
+        <Issue>4</Issue>
+        <DOI>10.1126/sciadv.1501532</DOI>
+        <Online_Resource>http://advances.sciencemag.org/content/2/4/e1501532</Online_Resource>
+    </Reference>
+    <Reference>
+        <Author>R. Kyle Bocinsky and Timothy A. Kohler</Author>
+        <Publication_Date>2014</Publication_Date>
+        <Title>A 2,000-year reconstruction of the rain-fed maize agricultural niche in the US Southwest</Title>
+        <Series>Nature Communications</Series>
+        <Volume>5</Volume>
+        <Issue>5618</Issue>
+        <DOI>10.1038/ncomms6618</DOI>
+        <Online_Resource>http://www.nature.com/ncomms/2014/141204/ncomms6618/full/ncomms6618.html</Online_Resource>
+    </Reference>
+    <Summary>
+        <Abstract>Cycles of demographic and organizational change are well documented in Neolithic societies, but the social and ecological processes underlying them are debated. Such periodicities are implicit in the “Pecos classification,” a chronology for the pre-Hispanic U.S. Southwest introduced in Science in 1927 which is still widely used. To understand these periodicities, we analyzed 29,311 archaeological tree-ring dates from A.D. 500 to 1400 in the context of a novel high spatial resolution, annual reconstruction of the maize dry-farming niche for this same period. We argue that each of the Pecos periods initially incorporates an “exploration” phase, followed by a phase of “exploitation” of niches that are simultaneously ecological, cultural, and organizational. Exploitation phases characterized by demographic expansion and aggregation ended with climatically driven downturns in agricultural favorability, undermining important bases for social consensus. Exploration phases were times of socio-ecological niche discovery and development. STUDY NOTES: High spatial resolution (30 arc-second) Southwestern United States tree-ring reconstructions of May-September Growing-degree Days (GDD) and Net Water-year Precipitation (previous October - current November). The reconstructions were performed using the "PaleoCAR" method detailed in Bocinsky and Kohler (2014). </Abstract>
+    </Summary>
+    <Related_URL>
+        <URL_Content_Type>
+            <Type>GET DATA</Type>
+        </URL_Content_Type>
+        <URL>http://www1.ncdc.noaa.gov/pub/data/paleo/treering/reconstructions/northamerica/usa/bocinsky2016/readme-bocinsky2016.txt</URL>
+        <Description>Data Description</Description>
+    </Related_URL>
+    <Related_URL>
+        <URL_Content_Type>
+            <Type>GET DATA</Type>
+        </URL_Content_Type>
+        <URL>http://www1.ncdc.noaa.gov/pub/data/paleo/treering/reconstructions/northamerica/usa/bocinsky2016/</URL>
+        <Description>Data File Folder</Description>
+    </Related_URL>
+    <IDN_Node>
+        <Short_Name>USA/NOAA</Short_Name>
+    </IDN_Node>
+    <Metadata_Name>DIF</Metadata_Name>
+    <Metadata_Version>Version 9.8.4</Metadata_Version>
+    <DIF_Creation_Date>2016-04-05</DIF_Creation_Date>
+    <Last_DIF_Revision_Date>2016-04-05</Last_DIF_Revision_Date>
+</DIF>
