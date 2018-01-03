@@ -4,7 +4,7 @@ const mime = require('rest/interceptor/mime');
 
 const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
-async function indexFile(host, index, type, filename) {
+function loadJsonFromFile(filename) {
     
     var textDocument;    
     try {
@@ -24,6 +24,13 @@ async function indexFile(host, index, type, filename) {
         }
     }
 
+    return jsonDocument;
+}
+    
+async function indexDocument(host, index, type, filename) {
+    
+    const jsonDocument = loadJsonFromFile(filename);
+
     return await callRESTService({
         method: 'POST', 
         path: host + "/" + index + "/" + type,
@@ -31,4 +38,5 @@ async function indexFile(host, index, type, filename) {
     });
 }
 
-module.exports.indexFile = indexFile;
+module.exports.loadJsonFromFile = loadJsonFromFile;
+module.exports.indexDocument = indexDocument;

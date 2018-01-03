@@ -30,7 +30,7 @@ beforeAll(async () => {
                 "type"          : "envelope", 
                 "coordinates"   : [ 
                     [ -115.0000, 31.0000 ],
-                    [ -102.0000, 43.0000 ],
+                    [ -102.0000, 43.0000 ]
                 ]
             },
             "spatialres"        : "30 arc-sec",

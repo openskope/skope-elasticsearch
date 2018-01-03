@@ -31,7 +31,6 @@ describe("When an implicitly created mapping is retrieved ", async () => {
             path: esClusterUrl + '/megacorp/_mapping/employee/'
         });
     });
-        
 
     it ('the http status code is 200 (ok)', async () => {
         expect(response.status.code).toBe(200);

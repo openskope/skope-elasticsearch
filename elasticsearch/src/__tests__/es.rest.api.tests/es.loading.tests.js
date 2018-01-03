@@ -12,7 +12,7 @@ describe("When a JSON document is read from a file and indexed", async () => {
     
     var response;
     beforeAll(async () => {    
-        response = await loader.indexFile(esClusterUrl, 'megacorp', 'employee', 
+        response = await loader.indexDocument(esClusterUrl, 'megacorp', 'employee', 
             'src/__tests__/es.rest.api.tests/data/employee1.json');
     });
 
@@ -39,7 +39,7 @@ describe("When a JSON file cannot be found", async () => {
     
     it ('http status code should be 201 (created)', async () => {
         try { 
-            await loader.indexFile(esClusterUrl, 'megacorp', 'employee', 
+            await loader.indexDocument(esClusterUrl, 'megacorp', 'employee', 
                 'nonexistent.json');
         } catch(e) {
             expect(e).toBe("File 'nonexistent.json' could not be read.");
@@ -54,7 +54,7 @@ describe("When a malformed JSON file is read", async () => {
     it ('http status code should be 201 (created)', async () => {
         var exception;
         try { 
-            await loader.indexFile(esClusterUrl, 'megacorp', 'employee', 
+            await loader.indexDocument(esClusterUrl, 'megacorp', 'employee', 
                 'src/__tests__/es.rest.api.tests/data/malformed.json');
             fail();
         } catch(e) {
