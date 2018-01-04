@@ -61,7 +61,7 @@ describe("When a malformed JSON file is read", async () => {
             exception = e;
         }
         expect(exception.message).toBe('Error parsing JSON document');
-        expect(exception.details).toBe('Unexpected token , in JSON at position 50');
+        expect(exception.details).toBe('Unexpected token , in JSON at position 19');
     });
 
 });
