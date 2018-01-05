@@ -17,7 +17,7 @@ This repo contains scripts, tests, and other resources supporting development of
 
 The tests in this repository are meant to run against an Elasticsearch cluster containing no useful data. The tests are destructive. They add and delete indexes and documents.  The `docker-compose.yml` file defines a set of Docker containers that run an Elasticsearch cluster against which the tests are known to pass.
 
-### Prerequisites
+### Software installation prerequisites
 
 Running the tests on a development system requires that you have the following software packages installed:
 
@@ -25,7 +25,13 @@ Running the tests on a development system requires that you have the following s
 * npm
 * Docker (with docker-compose)
 
-The scripts and tests in this repo work are known to work correclty on recent versions of macOS, Wndows, and Ubuntu.
+With `Node` and `npm` installed you can install the additional `npm` packages that are required by the tests:
+
+    $ npm install
+
+These packages will be installed to a `node_modules` directory at the top of your clone of the repo.
+
+Note that the scripts and tests in this repo work are known to work correctly on recent versions of macOS, Wndows, and Ubuntu.
 
 ### Starting the Elasticsearch cluster
 
