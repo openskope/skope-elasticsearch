@@ -1,10 +1,10 @@
-var es = require('./src/es');
+var es = require('./es');
 
 async function main() {
   if (await es.isup({host: 'localhost:9200'})) {
-    console.log('elasticsearch cluster is UP');
+    console.log('The test elasticsearch cluster is UP');
   } else {
-    console.log('elasticsearch cluster is DOWN');
+    console.log('The test elasticsearch cluster is DOWN');
   }
 } 
 

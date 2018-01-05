@@ -43,7 +43,15 @@ Alternatively, you can use the `start` script defined in `package.json` which is
 
     $ npm start
 
-Note that it may take several minutes fo the ES cluster to start up.
+Note that it may take several minutes fo the ES cluster to start up.  You can check if the ES cluster is up using the src/is-up.js script. If it is up you will see this:
+
+    $ node .\src\is-up.js
+    The test elasticsearch cluster is UP
+
+Otherwise, you will get this output:
+
+    $ node .\src\is-up.js
+    The test elasticsearch cluster is DOWN
 
 To shut down the ES cluster issue either the `docker-compose down` or `npm stop` command in a different terminal.  You can restart the ES cluster with the `npm restart` command.  This is equivalent to `npm stop` followed by `npm start`.
 
