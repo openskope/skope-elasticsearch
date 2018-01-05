@@ -8,7 +8,7 @@ const callRESTService =  rest.wrap(mime, { mime: 'application/json' } );
 
 describe("When an implicitly created mapping is retrieved ", async () => {
 
-    var response;
+    var response; 
 
     beforeAll(async () => {
         
@@ -23,8 +23,10 @@ describe("When an implicitly created mapping is retrieved ", async () => {
                 "age" :        25,
                 "about" :      "I love to go rock climbing",
                 "interests": [ "sports", "music" ]
-            }
+            } 
         });
+
+        await es.refreshAll(esClusterUrl);
 
         response = await callRESTService({
             method: 'GET', 
