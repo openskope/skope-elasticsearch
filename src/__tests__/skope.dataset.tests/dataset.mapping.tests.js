@@ -73,4 +73,13 @@ describe("When a dataset document is indexed after the mapping is created", asyn
         expect(indexingResponse.entity._version).toBe(1);
     });
 
+    it ('the mapping is unchanged after the document is indexed', async () => {
+        const response = await callRESTService({
+            method: 'GET', 
+            path: esClusterUrl + '/skope/_mapping/dataset/'
+        });
+        expect(response.entity.skope).toEqual( datasetMappingJson );        
+    });
+
+
 });
