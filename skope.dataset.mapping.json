@@ -6,30 +6,49 @@
                     "properties": {
                         "id": { "type": "text" },
                         "title": { "type": "text" },
-                        "authors": { "type": "text" },
                         "description": { "type": "text" },
+                        "authors": { "type": "text" },
                         "citation": { "type": "text" }                        
                     }
                 },
+                "creator":  { "type": "text" },
+                "version":  { "type": "text" },
                 "revised": {  "type": "date", "format": "yyyy-MM-dd" },
                 "status":  { "type": "keyword" },
                 "datatypes": { "type": "text" },
+                "docs": { "type": "text" },
+                "logo": { "type": "text" },
                 "publisher": { "type": "text" },
-                "download":  { "type": "text" },
                 "keywords":  { "type": "text" },
                 "variable":  { "type": "text" },
-                "spatial_extent": { "type": "geo_shape" },
+                "spatialext":  { "type": "text" },
                 "spatialres":  { "type": "text" },
+                "extent": { "type": "geo_shape" },
                 "temporalext":  { "type": "text" },
-                "temporal_extent":  {
+                "temporalres":  { "type": "keyword" },
+                "period":  {
                     "properties": {
-                        "start": {  "type": "date", "format": "yyyy-MM-dd" },
-                        "end":  {  "type": "date", "format": "yyyy-MM-dd" }
+                        "gte": {  "type": "date", "format": "yyyy-MM-dd" },
+                        "lte":  {  "type": "date", "format": "yyyy-MM-dd" }
                     }
                 },
-                "temporalres":  { "type": "keyword" },
-                "model_title":  { "type": "keyword" },
-                "layer_wms":  { "type": "text" }
+                "model": {
+                    "properties": {
+                        "nickname": { "type": "text" },
+                        "title": { "type": "text" },
+                        "new": { "type": "text" }
+                    }
+                },
+                "layer": {
+                    "properties": {
+                        "title": { "type": "text" }, 
+                        "wms":  { "type": "text" },
+                        "download":  { "type": "text" },
+                        "datatype": { "type": "keyword" },
+                        "min": { "type": "text" },
+                        "max": { "type": "text"}
+                    }
+                }
             }
         }
     }
