@@ -31,7 +31,7 @@ beforeAll(async () => {
     });
 
     indexingResponse = await loader.indexDocument(esClusterUrl, 'skope', 'dataset', 
-        'src/__tests__/skope.dataset.tests/data/noaa-recon-19783-gdd.json');
+        'data/noaa-recon-19783-gdd.json');
 });        
 
 describe("When an explicit mapping is created and retrieved ", async () => {

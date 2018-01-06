@@ -16,7 +16,7 @@ describe("When a dataset document is read from a file and indexed", async () => 
         await es.deleteIndex(esClusterUrl, 'skope');
         
         response = await loader.indexDocument(esClusterUrl, 'skope', 'dataset', 
-            'src/__tests__/skope.dataset.tests/data/noaa-recon-19783-gdd.json');
+            'data/noaa-recon-19783-gdd.json');
     });
 
     it ('http status code should be 201 (created)', async () => {
