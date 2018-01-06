@@ -17,7 +17,7 @@ beforeAll(async () => {
     await es.deleteIndex(esClusterUrl, 'skope');
     
     datasetMappingJson = loader.loadJsonFromFile(
-        'src/__tests__/skope.dataset.tests/data/skope.dataset.mapping.json');
+        'skope.dataset.mapping.json');
 
     mappingPutResponse = await callRESTService({
         method: 'PUT', 
