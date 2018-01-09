@@ -34,7 +34,7 @@
                 },
                 "model": {
                     "properties": {
-                        "nickname": { "type": "text" },
+                        "nickname": { "type": "keyword" },
                         "title": { "type": "text" },
                         "new": { "type": "text" }
                     }
