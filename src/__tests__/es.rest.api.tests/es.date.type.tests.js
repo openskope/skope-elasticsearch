@@ -65,3 +65,87 @@ describe("When both ends of a date range are within the unix epoch", async () =>
     });
 
 });
+
+describe("When start date range precedes the unix epoch", async () => {
+
+    const rangeThatStartsBeforeEpoch = {
+        "period" : {
+            "start"           : "1969-01-01",
+            "end"             : "2000-01-01"
+        }
+    };
+
+    var postResponse;
+    var getResponse;
+
+    beforeAll(async () => {
+
+        postResponse = await callRESTService({
+            method: 'POST', 
+            path: esClusterUrl + '/time/range/2',
+            entity: rangeThatStartsBeforeEpoch 
+        });
+
+        await es.refreshAll(esClusterUrl);
+
+        getResponse = await callRESTService({
+            method: 'GET', 
+            path: esClusterUrl + '/time/range/2'
+        });
+    });
+
+    it ('the returned post status code should be 201 - created', async () => {
+        expect(postResponse.status.code).toBe(201);
+    });
+
+    it ('the returned get status code should be 200 - ok', async () => {
+        expect(getResponse.status.code).toBe(200);
+    });
+
+    it ('the returned data range matches that stored in elasticsearch', async () => {
+        expect(getResponse.entity._source).toEqual(rangeThatStartsBeforeEpoch);
+    });
+
+});
+
+describe("When date range ends before the unix epoch", async () => {
+
+    const rangeThatEndsBeforeEpoch = {
+        "period" : {
+            "start"           : "0001-01-01",
+            "end"             : "1001-01-01"
+        }
+    };
+
+    var postResponse;
+    var getResponse;
+
+    beforeAll(async () => {
+
+        postResponse = await callRESTService({
+            method: 'POST', 
+            path: esClusterUrl + '/time/range/3',
+            entity: rangeThatEndsBeforeEpoch 
+        });
+
+        await es.refreshAll(esClusterUrl);
+
+        getResponse = await callRESTService({
+            method: 'GET', 
+            path: esClusterUrl + '/time/range/3'
+        });
+    });
+
+    it ('the returned post status code should be 201 - created', async () => {
+        expect(postResponse.status.code).toBe(201);
+    });
+
+    it ('the returned get status code should be 200 - ok', async () => {
+        expect(getResponse.status.code).toBe(200);
+    });
+
+    it ('the returned data range matches that stored in elasticsearch', async () => {
+        expect(getResponse.entity._source).toEqual(rangeThatEndsBeforeEpoch);
+    });
+
+});
