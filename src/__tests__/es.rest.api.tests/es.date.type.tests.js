@@ -11,16 +11,18 @@ beforeAll(async () => {
     await es.deleteIndex(esClusterUrl, 'time');
     
     await callRESTService({
-        method: 'POST', 
-        path: esClusterUrl + '/time/range/',
+        method: 'PUT', 
+        path: esClusterUrl + '/time',
         entity: {
-            "period":  {
-                "properties": {
-                    "start": {  "type": "date", "format": "yyyy-MM-dd" },
-                    "end":   {  "type": "date", "format": "yyyy-MM-dd" }
-                }
-            },
-        } 
+            "mappings": {
+                "range":  {
+                    "properties": {
+                        "start": {  "type": "date", "format": "yyyy-MM-dd" },
+                        "end":   {  "type": "date", "format": "yyyy-MM-dd" }
+                    }
+                },
+            }
+        }
     });
 });
 
@@ -28,13 +30,15 @@ describe("When both ends of a date range are within the unix epoch", async () =>
 
     const rangeInEpoch = {
         "period" : {
-            "start"           : "1970-01-01",
-            "end"             : "2000-01-01"
+            "start"           : "1971-01-01",
+            "end"             : "2001-01-01"
         }
     };
 
     var postResponse;
     var getResponse;
+    var searchResponse;
+    var hits;
 
     beforeAll(async () => {
 
@@ -50,6 +54,7 @@ describe("When both ends of a date range are within the unix epoch", async () =>
             method: 'GET', 
             path: esClusterUrl + '/time/range/1'
         });
+
     });
 
     it ('the returned post status code should be 201 - created', async () => {
@@ -62,6 +67,30 @@ describe("When both ends of a date range are within the unix epoch", async () =>
 
     it ('the returned data range matches that stored in elasticsearch', async () => {
         expect(getResponse.entity._source).toEqual(rangeInEpoch);
+    });
+
+    it ('the total number of search hits should be 1', async () => {
+
+        searchResponse = await callRESTService({
+            method: 'GET',
+            path: esClusterUrl + '/time/range/_search',
+            entity: {
+                "query" : {
+                    "range" : {
+                        "period.start" : { 
+                            "gte" : "1970-01-01"
+                        } 
+                    }
+                },
+            }
+
+        });
+
+        hits = searchResponse.entity.hits.hits;
+
+        expect(searchResponse.status.code).toBe(200);
+        expect(searchResponse.entity.hits.total).toBe(1);
+        expect(hits[0]._source).toEqual(rangeInEpoch);
     });
 
 });
