@@ -3,15 +3,15 @@
     "dataset": {
       "properties": {
         "skopeid": { "type": "keyword" },
+        "workspace": { "type": "keyword" },
         "type": { "type": "keyword" },
 
         "title": { "type": "text" },
-        "descriptionMD": { "type": "text" },
-        "investigators": { "type": "text" },
-        "version": { "type": "text" },
+        "description": { "type": "text" },
+        "investigators": { "type": "keyword" },
         "revised": { 
           "type": "date",
-          "format": "yyyy-MM-dd hh:mm"
+          "format": "yyyy-MM-dd"
         },
         "status": { "type": "keyword" },
 
@@ -40,7 +40,7 @@
             "keywords": { "type": "keyword" },
             "extents": { "type": "text" },
             "resolution": { "type": "text" },
-            "geometry": { "type": "text" }
+            "geojson": { "type": "geo_shape" }
           }
         },
 
@@ -50,10 +50,8 @@
             "keywords": { "type": "keyword" },
             "resolution": { "type": "text" },
             "period":  {
-              "properties": {
-                "gte": {  "type": "date", "format": "yyyy-MM-dd" },
-                "lte":  {  "type": "date", "format": "yyyy-MM-dd" }
-              }
+                "type": "date_range",
+                "format": "yyyy-MM-dd||epoch_millis"
             }
           }
         },
