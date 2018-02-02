@@ -1,0 +1,19 @@
+{
+  "type": "dataset",
+  "title": "Imported from description.md",
+  "description": "Imported from description.md",
+  "revised": "2016-04-01",
+  "region": {
+    "name": "Southwestern USA",
+    "extents": [ "31", "43", "-115", "-102" ],
+    "resolution": ""
+  },
+  "timespan": {
+    "name": "0-2000CE",
+    "resolution": "",
+    "period": {
+      "gte": "0000-01",
+      "lte": "2000-01"
+    }
+  }
+}
