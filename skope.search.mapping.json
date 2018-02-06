@@ -10,15 +10,18 @@
         "description": { "type": "text" },
         "investigators": { "type": "keyword" },
         "revised": { 
-          "type": "date",
-          "format": "yyyy-MM-dd"
+          "type": "date"
         },
         "status": { "type": "keyword" },
 
         "publisher": {
           "properties": {
-            "name": { "type": "text" },
-            "nickname": { "type": "keyword" },
+            "name": { 
+              "type": "text",
+              "fields": { 
+                "raw": { "type": "keyword" }
+              }
+            },
             "url": { "type": "keyword" }
           }
         },
@@ -27,8 +30,12 @@
         "variables": {
           "type": "nested",
           "properties": {
-            "name": { "type": "text" },
-            "keywords": { "type": "keyword" },
+            "name": { 
+              "type": "text",
+              "fields": {
+                "raw": { "type": "keyword" }
+              }
+            },
             "url": { "type": "keyword" },
             "description": { "type": "text" }
           }
@@ -36,22 +43,30 @@
         
         "region": {
           "properties": {
-            "name": { "type": "text" },
-            "keywords": { "type": "keyword" },
-            "extents": { "type": "text" },
-            "resolution": { "type": "text" },
-            "geojson": { "type": "geo_shape" }
+            "name": { 
+              "type": "text",
+              "fields": {
+                "raw": { "type": "keyword" }
+              }
+            },
+            "extents": { "type": "float" },
+            "resolution": { "type": "keyword" },
+            "geometry": { "type": "geo_shape" }
           }
         },
 
         "timespan": {
           "properties": {
-            "name": { "type": "text" },
-            "keywords": { "type": "keyword" },
-            "resolution": { "type": "text" },
+            "name": { 
+              "type": "text",
+              "fields": {
+                "raw": { "type": "keyword" }
+              }
+            },
+            "resolution": { "type": "keyword" },
             "period":  {
                 "type": "date_range",
-                "format": "yyyy-MM-dd||epoch_millis"
+                "format": "strict_year||strict_year_month||strict_year_month_day||epoch_millis"
             }
           }
         },
@@ -60,7 +75,7 @@
           "properties": {
             "markdown": { "type": "text" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
@@ -69,7 +84,7 @@
           "properties": {
             "markdown": { "type": "text" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
@@ -78,14 +93,19 @@
           "properties": {
             "markdown": { "type": "text" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
         "overlays": {
           "type": "nested",
           "properties": {
-            "name": { "type": "text" },
+            "name": { 
+              "type": "text",
+              "fields": { 
+                "raw": { "type": "keyword" }
+              }
+            },
             "description": { "type": "text" },
             "type": { "type": "keyword" },
             "url": { "type": "keyword" },
@@ -98,55 +118,69 @@
         "downloadService": {
           "properties": {
             "markdown": { "type": "text" },
-            "capabilities": { "type": "keyword" },
+            "access": { "type": "keyword" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
         "downloads": {
           "type": "nested",
           "properties": {
-            "name": { "type": "text" },
-            "description": { "type": "text" },
+            "name": { 
+              "type": "text",
+              "fields": { 
+                "raw": { "type": "keyword" }
+              }
+            },
+            "size": { "type": "long" },
+            "format": { "type": "keyword" },
             "url": { "type": "keyword" },
-            "type": { "type": "keyword" }
+            "description": { "type": "text" }
           }
         },
 
         "analyticService": {
           "properties": {
             "markdown": { "type": "text" },
-            "capabilities": { "type": "keyword" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
         "analytics": {
           "type": "nested",
           "properties": {
-            "name": { "type": "text" },
-            "description": { "type": "text" },
-            "url": { "type": "keyword" }
+            "name": { 
+              "type": "text",
+              "fields": { 
+                "raw": { "type": "keyword" }
+              }
+            },
+            "url": { "type": "keyword" },
+            "description": { "type": "text" }
           }
         },
 
         "modelService": {
           "properties": {
             "markdown": { "type": "text" },
-            "capabilities": { "type": "keyword" },
             "url": { "type": "keyword" },
-            "anchor": { "type": "text" },
+            "link": { "type": "text" },
             "description": { "type": "text" }
           }
         },
         "model": {
           "properties": {
-            "title": { "type": "keyword" },
-            "nickname": { "type": "keyword" },
-            "version": { "type": "keyword" },
-            "capabilities": { "type": "keyword" }
+            "type": { "type": "keyword" },
+            "name": { 
+              "type": "text",
+              "fields": { 
+                "raw": { "type": "keyword" }
+              }
+            },
+            "url": { "type": "keyword" },
+            "description": { "type": "text" }
           }
         }
       }
